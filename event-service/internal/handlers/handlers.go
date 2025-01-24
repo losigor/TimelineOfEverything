@@ -14,11 +14,15 @@ type Response struct {
 	Message string `json: "message"`
 }
 
-func PostHandler(c echo.Context) error {
+func PostEvent(c echo.Context) error {
 	var event Event
 
 	if err := c.Bind(&event); err != nil {
 		return BadRequest(c, "Could not bind event")
+	}
+
+	if err := DB.Where("text = ?", event.Name).First(&Event{}); err == nil {
+		return BadRequest(c, "Event with this name is already exists")
 	}
 
 	if err := DB.Create(&event).Error; err != nil {
@@ -28,7 +32,7 @@ func PostHandler(c echo.Context) error {
 	return Success(c, "Event was added")
 }
 
-func GetHandlerByID(c echo.Context) error {
+func GetEventByID(c echo.Context) error {
 
 	var event Event
 	paramID := c.Param("id")
@@ -45,7 +49,7 @@ func GetHandlerByID(c echo.Context) error {
 	return c.JSON(http.StatusOK, &event)
 }
 
-func GetHandler(c echo.Context) error {
+func GetEvents(c echo.Context) error {
 
 	var events []Event
 
@@ -56,7 +60,7 @@ func GetHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, &events)
 }
 
-func PatchHandler(c echo.Context) error {
+func PatchEvent(c echo.Context) error {
 
 	ParamID := c.Param("id")
 	id, err := strconv.Atoi(ParamID)
@@ -81,7 +85,7 @@ func PatchHandler(c echo.Context) error {
 	return Success(c, "Event was successfully updated")
 }
 
-func DeleteHandler(c echo.Context) error {
+func DeleteEvent(c echo.Context) error {
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

@@ -12,11 +12,11 @@ func main() {
 	storage.InitDB()
 
 	e := echo.New()
-	e.POST("/events", handlers.PostHandler)
-	e.GET("/events/:id", handlers.GetHandlerByID)
-	e.GET("/events", handlers.GetHandler)
-	e.PATCH("/events/:id", handlers.PatchHandler)
-	e.DELETE("/events/:id", handlers.DeleteHandler)
+	e.POST("/events", handlers.PostEvent)
+	e.GET("/events/:id", handlers.GetEventByID)
+	e.GET("/events", handlers.GetEvents)
+	e.PATCH("/events/:id", handlers.PatchEvent)
+	e.DELETE("/events/:id", handlers.DeleteEvent)
 
 	e.Start(":8083")
 
