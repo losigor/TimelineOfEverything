@@ -21,6 +21,9 @@ var DB *gorm.DB
 
 func InitDB() {
 	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("DB could not load .env file")
+	}
 	dsn := os.Getenv("DSN")
 
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
