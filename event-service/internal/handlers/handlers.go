@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	. "Timeline/event-service/storage"
+	. "event-service/storage"
 	"fmt"
 	"net/http"
 	"strconv"
